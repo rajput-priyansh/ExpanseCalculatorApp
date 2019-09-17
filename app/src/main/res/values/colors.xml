@@ -3,4 +3,13 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+
+    <color name="lightGray">#E0E0E0</color>
+    <color name="darker_gray">#aaa</color>
+    <color name="expense">#ba160c</color>
+    <color name="income">#8bbe1b</color>
 </resources>
