@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -48,15 +49,20 @@ public class MainActivity extends BaseActivity implements MainActivityOperation 
         initUi();
 
         entryViewModel.getAllEntries().observe(this, entries -> {
-            Log.d("TESTP", "onChanged() called with: words = [" + entries.size() + "]");
-            if (adapter != null) {
-                EntryListFragment entryListAll = (EntryListFragment) adapter.getItem(0);
-                EntryListFragment entryListIncome = (EntryListFragment) adapter.getItem(1);
-                EntryListFragment entryListExpense = (EntryListFragment) adapter.getItem(2);
-                entryListAll.updateData(entries);
-                entryListIncome.updateData(entries);
-                entryListExpense.updateData(entries);
-            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (adapter != null) {
+                        EntryListFragment entryListAll = (EntryListFragment) adapter.getItem(0);
+                        EntryListFragment entryListIncome = (EntryListFragment) adapter.getItem(1);
+                        EntryListFragment entryListExpense = (EntryListFragment) adapter.getItem(2);
+                        entryListAll.updateData(entries);
+                        entryListIncome.updateData(entries);
+                        entryListExpense.updateData(entries);
+                    }
+                }
+            }, 500);
+
         });
     }
 
@@ -74,6 +80,11 @@ public class MainActivity extends BaseActivity implements MainActivityOperation 
         toolbar = findViewById(R.id.toolbar);
         tabLayout = findViewById(R.id.tab);
         viewPager = findViewById(R.id.viewPager);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Expanse Calculator");
+            getSupportActionBar().setElevation(0);
+        }
 
         setSupportActionBar(toolbar);
 

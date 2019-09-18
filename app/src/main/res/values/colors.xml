@@ -12,4 +12,6 @@
     <color name="darker_gray">#aaa</color>
     <color name="expense">#ba160c</color>
     <color name="income">#8bbe1b</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

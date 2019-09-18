@@ -11,7 +11,7 @@
         android:id="@+id/tvEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Empty!"
+        android:text="@string/empty"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:drawableLeft="@drawable/ic_sentiment_satisfied_24dp"
         android:drawablePadding="@dimen/_4sdp"

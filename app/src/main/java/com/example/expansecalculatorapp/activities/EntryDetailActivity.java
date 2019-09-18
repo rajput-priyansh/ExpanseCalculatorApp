@@ -185,7 +185,6 @@ public class EntryDetailActivity extends BaseActivity {
             openCustomSingleChoiceDialog(new SingleSelectionDialogItemSelect() {
                 @Override
                 public void onItemSelect(int index) {
-                    Log.d("TESTP", "tvCategory onItemSelect() called with: index = [" + index + "]");
                     entry.setCategory(categories.get(index).getValue());
                     tvCategory.setText(categories.get(index).getName());
                     int iconDrawable = -1;

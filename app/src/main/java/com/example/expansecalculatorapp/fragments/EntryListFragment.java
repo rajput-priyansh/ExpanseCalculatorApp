@@ -96,6 +96,8 @@ public class EntryListFragment extends BaseFragment {
         rvEntry = fView.findViewById(R.id.rvEntry);
         tvEmpty = fView.findViewById(R.id.tvEmpty);
 
+        tvEmpty.setText(R.string.please_wait);
+
         adapterEntryList = new AdapterEntryList(getContext(), wrapperEntries);
 
         rvEntry.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -131,7 +133,8 @@ public class EntryListFragment extends BaseFragment {
     @Override
     public void updateData(List<Entry> entries) {
         super.updateData(entries);
-        Log.d("TESTP", "updateData() called with: entries = [" + entries.size() + "] TYPE = [ " + type + " ]");
+        if (wrapperEntries == null)
+            return;
 
         WrapperEntry wrapperEntry = null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -263,6 +266,7 @@ public class EntryListFragment extends BaseFragment {
         }
 
         if (wrapperEntries.size() == 0) {
+            tvEmpty.setText(R.string.empty);
             tvEmpty.setVisibility(View.VISIBLE);
             rvEntry.setVisibility(View.GONE);
         } else {
