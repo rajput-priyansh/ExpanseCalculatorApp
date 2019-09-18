@@ -28,4 +28,15 @@ public class EntryViewModel extends AndroidViewModel {
     public void insert(Entry entry) {
         entryRepository.insert(entry);
     }
+
+    public void update(Entry entry) {
+        entryRepository.update(entry);
+    }
+    public void deleteByID(Entry entry) {
+        entryRepository.deleteByID(entry);
+    }
+
+    public Entry getById(int id) {
+        return entryRepository.getByID(id);
+    }
 }

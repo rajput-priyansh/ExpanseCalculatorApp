@@ -29,6 +29,16 @@ public class EntryRepository {
         new insertAsyncTask(entryDao).execute(entry);
     }
 
+    public void update (Entry entry) {
+        new updateAsyncTask(entryDao).execute(entry);
+    }
+    public void deleteByID (Entry entry) {
+        new deleteAsyncTask(entryDao).execute(entry);
+    }
+    public Entry getByID (int id) {
+        return entryDao.getByID(id);
+    }
+
     private static class insertAsyncTask extends AsyncTask<Entry, Void, Void> {
 
         private EntryDao mAsyncTaskDao;
@@ -40,6 +50,36 @@ public class EntryRepository {
         @Override
         protected Void doInBackground(final Entry... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class updateAsyncTask extends AsyncTask<Entry, Void, Void> {
+
+        private EntryDao mAsyncTaskDao;
+
+        updateAsyncTask(EntryDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Entry... params) {
+            mAsyncTaskDao.update(params[0]);
+            return null;
+        }
+    }
+
+    private static class deleteAsyncTask extends AsyncTask<Entry, Void, Void> {
+
+        private EntryDao mAsyncTaskDao;
+
+        deleteAsyncTask(EntryDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Entry... params) {
+            mAsyncTaskDao.deleteId(params[0].getId());
             return null;
         }
     }

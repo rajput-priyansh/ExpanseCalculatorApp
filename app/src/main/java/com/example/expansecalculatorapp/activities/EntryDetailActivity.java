@@ -3,6 +3,7 @@ package com.example.expansecalculatorapp.activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.expansecalculatorapp.R;
+import com.example.expansecalculatorapp.db.EntryDao;
+import com.example.expansecalculatorapp.db.EntryViewModel;
 import com.example.expansecalculatorapp.model.Category;
 import com.example.expansecalculatorapp.model.Entry;
 import com.example.expansecalculatorapp.util.AppConstant;
@@ -24,6 +27,7 @@ import com.example.expansecalculatorapp.util.AppConstant;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class EntryDetailActivity extends BaseActivity {
 
@@ -45,6 +49,8 @@ public class EntryDetailActivity extends BaseActivity {
 
     private Entry entry;
 
+    private int entryID;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +70,32 @@ public class EntryDetailActivity extends BaseActivity {
         sdfDate = new SimpleDateFormat("dd/MM/YYYY");
         sdfTime = new SimpleDateFormat("hh:mm a");
 
-        entry = new Entry();
+        entryID = getIntent().getIntExtra("ID", 0);
+
+        if (entryID > 0) {
+            new getAsyncTask().execute();
+        } else {
+
+            entry = new Entry();
+        }
+
+        if (entry == null)
+            entry = new Entry();
+
+    }
+
+    private class getAsyncTask extends AsyncTask<Integer, Entry, Entry> {
+
+        @Override
+        protected Entry doInBackground(Integer... integers) {
+            entry = entryViewModel.getById(entryID);
+            return entry;
+        }
+
+        @Override
+        protected void onPostExecute(Entry entry) {
+            updateUi();
+        }
     }
 
     @Override
@@ -271,6 +302,81 @@ public class EntryDetailActivity extends BaseActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    private void updateUi() {
+        Log.d("TESTP", "EntryDetailActivity updateUi() called"+entry);
+        if (entry == null)
+            return;
+        long timestampLong = entry.getTimeStamp();
+        Date d = new Date(timestampLong);
+        selectedDate = Calendar.getInstance();
+        selectedDate.setTime(d);
+
+        tvType.setText(AppConstant.arrayEntryType[entry.getType()]);
+        tvAccount.setText(AppConstant.arrayAccountType[entry.getAccount()]);
+
+        String category = "";
+        int iconDrawable = -1;
+        switch (entry.getCategory()) {
+            case AppConstant.INCOME_SALARY:
+                iconDrawable = R.drawable.ic_work_primary;
+                category = "SALARY";
+                break;
+            case AppConstant.INCOME_STORE:
+                iconDrawable = R.drawable.ic_store_primary;
+                category = "STORE";
+                break;
+            case AppConstant.INCOME_REWARD:
+                iconDrawable = R.drawable.ic_stars_primary;
+                category = "REWARD";
+                break;
+            case AppConstant.INCOME_OTHER:
+            case AppConstant.EXPENSE_OTHER:
+                iconDrawable = R.drawable.ic_other_primary;
+                category = "OTHER";
+                break;
+            case AppConstant.EXPENSE_HEALTH:
+                iconDrawable = R.drawable.ic_healing_primary;
+                category = "HEALTH";
+                break;
+            case AppConstant.EXPENSE_FOOD:
+                iconDrawable = R.drawable.ic_food_primary;
+                category = "FOOD";
+                break;
+            case AppConstant.EXPENSE_BILL:
+                iconDrawable = R.drawable.ic_bill_primary;
+                category = "BILL";
+                break;
+            case AppConstant.EXPENSE_SHOPPING:
+                iconDrawable = R.drawable.ic_local_grocery_store_primary;
+                category = "SHOPPING";
+                break;
+            case AppConstant.EXPENSE_HOTEL:
+                iconDrawable = R.drawable.ic_local_hotel_primary;
+                category = "HOTEL";
+                break;
+            case AppConstant.EXPENSE_ENTERTAINMENT:
+                iconDrawable = R.drawable.ic_fun_primary;
+                category = "ENTERTAINMENT";
+                break;
+            case AppConstant.EXPENSE_FUEL:
+                iconDrawable = R.drawable.ic_local_gas_station_primary;
+                category = "FUEL";
+                break;
+
+        }
+
+        tvCategory.setText(category);
+        tvCategory.setCompoundDrawablesWithIntrinsicBounds( iconDrawable, 0, 0, 0);
+
+        etAmt.setText(String.valueOf(entry.getAmount()));
+
+        if (entry.getNote() != null)
+            etNote.setText(String.valueOf(entry.getNote()));
+
+        updateDateTimeUi();
+
     }
 
     private void updateDateTimeUi() {

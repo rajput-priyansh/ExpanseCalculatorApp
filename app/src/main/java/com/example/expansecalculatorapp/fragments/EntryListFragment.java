@@ -1,8 +1,8 @@
 package com.example.expansecalculatorapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.expansecalculatorapp.activities.EntryDetailActivity;
 import com.example.expansecalculatorapp.activities.MainActivity;
 import com.example.expansecalculatorapp.R;
 import com.example.expansecalculatorapp.adapter.AdapterEntryList;
+import com.example.expansecalculatorapp.interfaces.EntryEvent;
 import com.example.expansecalculatorapp.interfaces.MainActivityOperation;
 import com.example.expansecalculatorapp.model.Entry;
 import com.example.expansecalculatorapp.model.EntryHeader;
@@ -98,36 +100,20 @@ public class EntryListFragment extends BaseFragment {
 
         tvEmpty.setText(R.string.please_wait);
 
-        adapterEntryList = new AdapterEntryList(getContext(), wrapperEntries);
+        adapterEntryList = new AdapterEntryList(getContext(), wrapperEntries, new EntryEvent() {
+            @Override
+            public void onEdit(Entry entry) {
+                mainActivityOperation.onEntryUpdate(entry);
+            }
+
+            @Override
+            public void onDelete(Entry entry) {
+                mainActivityOperation.onEntryDelete(entry);
+            }
+        });
 
         rvEntry.setLayoutManager(new LinearLayoutManager(getContext()));
         rvEntry.setAdapter(adapterEntryList);
-    }
-
-    private double[] getTotalIncomeExponse(List<Entry> entries, String strDate) {
-        double[] data = new double[2];
-        double income = 0;
-        double expense = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        for (Entry entry : entries) {
-            long timestampLong = entry.getTimeStamp();
-            Date d = new Date(timestampLong);
-            Calendar c = Calendar.getInstance();
-            c.setTime(d);
-
-            if (strDate.equals(sdf.format(c.getTime()))) {
-                if (entry.getType() == AppConstant.ENTRY_INCOME) {
-                    income += entry.getAmount();
-                } else {
-                    expense += entry.getAmount();
-                }
-            }
-        }
-
-        data[0] = income;
-        data[1] = expense;
-
-        return data;
     }
 
     @Override
@@ -158,7 +144,7 @@ public class EntryListFragment extends BaseFragment {
                         wrapperEntry.setType(WrapperEntry.TYPE_DAILY_HEADER);
                         EntryHeader entryHeader = new EntryHeader();
                         entryHeader.setTimeStamp(entry.getTimeStamp());
-                        double[] data = getTotalIncomeExponse(entries, strDate);
+                        double[] data = getTotalIncomeExpanse(entries, strDate);
                         entryHeader.setToalIncome(data[0]);
                         entryHeader.setToalExpense(data[1]);
                         wrapperEntry.setEntryHeader(entryHeader);
@@ -198,7 +184,7 @@ public class EntryListFragment extends BaseFragment {
                             wrapperEntry.setType(WrapperEntry.TYPE_DAILY_HEADER);
                             EntryHeader entryHeader = new EntryHeader();
                             entryHeader.setTimeStamp(entry.getTimeStamp());
-                            double[] data = getTotalIncomeExponse(entries, strDate);
+                            double[] data = getTotalIncomeExpanse(entries, strDate);
                             entryHeader.setToalIncome(data[0]);
                             entryHeader.setToalExpense(data[1]);
                             wrapperEntry.setEntryHeader(entryHeader);
@@ -239,7 +225,7 @@ public class EntryListFragment extends BaseFragment {
                             wrapperEntry.setType(WrapperEntry.TYPE_DAILY_HEADER);
                             EntryHeader entryHeader = new EntryHeader();
                             entryHeader.setTimeStamp(entry.getTimeStamp());
-                            double[] data = getTotalIncomeExponse(entries, strDate);
+                            double[] data = getTotalIncomeExpanse(entries, strDate);
                             entryHeader.setToalIncome(data[0]);
                             entryHeader.setToalExpense(data[1]);
                             wrapperEntry.setEntryHeader(entryHeader);
@@ -274,5 +260,31 @@ public class EntryListFragment extends BaseFragment {
             rvEntry.setVisibility(View.VISIBLE);
             adapterEntryList.setWrapperEntries(wrapperEntries);
         }
+    }
+
+    private double[] getTotalIncomeExpanse(List<Entry> entries, String strDate) {
+        double[] data = new double[2];
+        double income = 0;
+        double expense = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        for (Entry entry : entries) {
+            long timestampLong = entry.getTimeStamp();
+            Date d = new Date(timestampLong);
+            Calendar c = Calendar.getInstance();
+            c.setTime(d);
+
+            if (strDate.equals(sdf.format(c.getTime()))) {
+                if (entry.getType() == AppConstant.ENTRY_INCOME) {
+                    income += entry.getAmount();
+                } else {
+                    expense += entry.getAmount();
+                }
+            }
+        }
+
+        data[0] = income;
+        data[1] = expense;
+
+        return data;
     }
 }

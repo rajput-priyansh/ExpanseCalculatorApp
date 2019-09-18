@@ -1,15 +1,11 @@
 package com.example.expansecalculatorapp.activities;
 
 
-import androidx.appcompat.app.ActionBar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.expansecalculatorapp.R;
 

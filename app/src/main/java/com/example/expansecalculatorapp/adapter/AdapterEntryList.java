@@ -1,17 +1,22 @@
 package com.example.expansecalculatorapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expansecalculatorapp.R;
+import com.example.expansecalculatorapp.activities.EntryDetailActivity;
+import com.example.expansecalculatorapp.activities.MainActivity;
+import com.example.expansecalculatorapp.interfaces.EntryEvent;
 import com.example.expansecalculatorapp.model.Entry;
 import com.example.expansecalculatorapp.model.EntryHeader;
 import com.example.expansecalculatorapp.model.WrapperEntry;
@@ -27,11 +32,13 @@ public class AdapterEntryList extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private Context context;
     private ArrayList<WrapperEntry> wrapperEntries;
+    private EntryEvent entryEvent;
 
 
-    public AdapterEntryList(Context context, ArrayList<WrapperEntry> wrapperEntries) {
+    public AdapterEntryList(Context context, ArrayList<WrapperEntry> wrapperEntries, EntryEvent entryEvent) {
         this.context = context;
         this.wrapperEntries = wrapperEntries;
+        this.entryEvent = entryEvent;
     }
 
     @Override
@@ -82,6 +89,8 @@ public class AdapterEntryList extends RecyclerView.Adapter<RecyclerView.ViewHold
         private TextView tvAccount;
         private TextView tvAmt;
         private TextView tvTime;
+        private ImageView ivEdit;
+        private ImageView ivDelete;
 
         private SimpleDateFormat sdf;
 
@@ -93,6 +102,8 @@ public class AdapterEntryList extends RecyclerView.Adapter<RecyclerView.ViewHold
             tvAccount = itemView.findViewById(R.id.tvAccount);
             tvAmt = itemView.findViewById(R.id.tvAmt);
             tvTime = itemView.findViewById(R.id.tvTime);
+            ivEdit = itemView.findViewById(R.id.ivEdit);
+            ivDelete = itemView.findViewById(R.id.ivDelete);
 
             sdf = new SimpleDateFormat("hh:mm a");
         }
@@ -168,6 +179,18 @@ public class AdapterEntryList extends RecyclerView.Adapter<RecyclerView.ViewHold
                 tvAccount.setText(AppConstant.arrayAccountType[entry.getAccount()]);
 
                 tvAmt.setText(String.valueOf(entry.getAmount()));
+
+                ivEdit.setOnClickListener(view -> {
+                    if (entryEvent != null) {
+                        entryEvent.onEdit(entry);
+                    }
+                });
+
+                ivDelete.setOnClickListener(view -> {
+                    if (entryEvent != null) {
+                        entryEvent.onDelete(entry);
+                    }
+                });
 
                 if (entry.getType() == AppConstant.ENTRY_INCOME) {
                     tvAmt.setTextColor(Color.parseColor("#8bbe1b"));

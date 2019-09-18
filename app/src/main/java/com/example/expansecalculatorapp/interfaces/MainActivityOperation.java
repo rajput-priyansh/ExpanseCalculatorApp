@@ -7,5 +7,6 @@ import java.util.ArrayList;
 
 public interface MainActivityOperation {
     ArrayList<Entry> getAllEntries();
-    void onEntryUpdate();
+    void onEntryUpdate(Entry entry);
+    void onEntryDelete(Entry entry);
 }
