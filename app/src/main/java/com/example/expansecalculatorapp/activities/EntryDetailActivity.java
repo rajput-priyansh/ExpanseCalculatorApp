@@ -138,6 +138,7 @@ public class EntryDetailActivity extends BaseActivity {
                 }
             }, selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH), selectedDate.get(Calendar.DAY_OF_MONTH));
 
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
             datePickerDialog.show();
 
         });
