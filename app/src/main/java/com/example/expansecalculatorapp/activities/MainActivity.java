@@ -1,12 +1,12 @@
-package com.example.expansecalculatorapp;
+package com.example.expansecalculatorapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.expansecalculatorapp.activities.BaseActivity;
-import com.example.expansecalculatorapp.activities.EntryDetailActivity;
-import com.example.expansecalculatorapp.db.EntryViewModel;
+import com.example.expansecalculatorapp.R;
 import com.example.expansecalculatorapp.fragments.EntryListFragment;
+import com.example.expansecalculatorapp.interfaces.MainActivityOperation;
+import com.example.expansecalculatorapp.model.Entry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -15,7 +15,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -26,13 +25,17 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MainActivityOperation {
 
     public static final int NEW_ENTRY_ACTIVITY_REQUEST_CODE = 1;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    private ViewPagerAdapter adapter;
+
+    private List<Entry> entries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +46,25 @@ public class MainActivity extends BaseActivity {
         initData();
 
         initUi();
+
+        entryViewModel.getAllEntries().observe(this, entries -> {
+            Log.d("TESTP", "onChanged() called with: words = [" + entries.size() + "]");
+            if (adapter != null) {
+                EntryListFragment entryListAll = (EntryListFragment) adapter.getItem(0);
+                EntryListFragment entryListIncome = (EntryListFragment) adapter.getItem(1);
+                EntryListFragment entryListExpense = (EntryListFragment) adapter.getItem(2);
+                entryListAll.updateData(entries);
+                entryListIncome.updateData(entries);
+                entryListExpense.updateData(entries);
+            }
+        });
     }
 
     @Override
     protected void initData() {
         super.initData();
 
-        entryViewModel.getAllEntries().observe(this, entries -> {
-            Log.d("TESTP", "onChanged() called with: words = [" + entries.size() + "]");
-            //adapter.setWords(words);
-        });
+        entries = new ArrayList<>();
     }
 
     @Override
@@ -104,12 +116,22 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public ArrayList<Entry> getAllEntries() {
+        return null;
+    }
+
+    @Override
+    public void onEntryUpdate() {
+
+    }
     private void setupViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(EntryListFragment.getInstance(), "DAILY");
-        adapter.addFragment(EntryListFragment.getInstance(), "WEEKLY");
-        adapter.addFragment(EntryListFragment.getInstance(), "MONTHLY");
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(EntryListFragment.getInstance(EntryListFragment.ALL), "ALL");
+        adapter.addFragment(EntryListFragment.getInstance(EntryListFragment.INCOME), "INCOME");
+        adapter.addFragment(EntryListFragment.getInstance(EntryListFragment.EXPENSE), "EXPENSE");
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

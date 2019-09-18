@@ -84,6 +84,9 @@ public class AdapterCategoryList extends RecyclerView.Adapter<AdapterCategoryLis
             case AppConstant.EXPENSE_OTHER:
                 iconDrawable = R.drawable.ic_other_primary_24dp;
                 break;
+            case AppConstant.EXPENSE_FUEL:
+                iconDrawable = R.drawable.ic_local_gas_station_primary_24dp;
+                break;
 
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

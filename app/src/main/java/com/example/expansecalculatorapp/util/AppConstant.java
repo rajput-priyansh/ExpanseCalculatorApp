@@ -20,15 +20,13 @@ public class AppConstant {
     public static final int EXPENSE_FOOD = 6;
     public static final int EXPENSE_BILL = 7;
     public static final int EXPENSE_FUEL = 8;
-    public static final int EXPENSE_SHOPPING = 8;
-    public static final int EXPENSE_HOTEL = 9;
-    public static final int EXPENSE_ENTERTAINMENT = 10;
-    public static final int EXPENSE_OTHER = 11;
+    public static final int EXPENSE_SHOPPING = 9;
+    public static final int EXPENSE_HOTEL = 10;
+    public static final int EXPENSE_ENTERTAINMENT = 11;
+    public static final int EXPENSE_OTHER = 12;
 
     public static String[] arrayEntryType = new String[]{"Income", "Expense"};
     public static String[] arrayAccountType = new String[]{"Cash", "Cheque", "Online", "E-Wallet", "Other"};
-    public static String[] arrayExpenseCategoty = new String[]{"Cash", "Cheque", "Online", "E-Wallet", "Other"};
-    public static String[] arrayIncomeCategoty = new String[]{"Cash", "Cheque", "Online", "E-Wallet", "Other"};
 
 
 }

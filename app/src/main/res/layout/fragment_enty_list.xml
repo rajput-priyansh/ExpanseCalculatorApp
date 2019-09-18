@@ -27,6 +27,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginLeft="@dimen/_4sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

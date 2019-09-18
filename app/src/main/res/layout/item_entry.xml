@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_4sdp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tvCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/darker_gray"
+        android:drawableLeft="@drawable/ic_store_primary"
+        android:drawablePadding="@dimen/_2sdp"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:lines="1"
+        android:ellipsize="end"
+        tools:text="FOOD" />
+
+    <LinearLayout
+        android:id="@+id/llType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_toRightOf="@+id/tvCategory"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@+id/llRight"
+        android:layout_marginRight="@dimen/_8sdp">
+
+        <TextView
+            android:id="@+id/tvNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:lines="1"
+            android:ellipsize="end"
+            tools:text="Sort Note"/>
+
+        <TextView
+            android:id="@+id/tvAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundshape"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorPrimary"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            tools:text="Cash"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/tvAmt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:drawableLeft="@drawable/ic_rupee_indian_expense"
+            android:textColor="@color/expense"
+            android:lines="1"
+            android:ellipsize="end"
+            tools:text="2500.50"/>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:drawableLeft="@drawable/ic_access_time_gray_24dp"
+            android:drawablePadding="@dimen/_2sdp"
+            android:textColor="@color/darker_gray"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:gravity="center_vertical"
+            tools:text="12:50 PM"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

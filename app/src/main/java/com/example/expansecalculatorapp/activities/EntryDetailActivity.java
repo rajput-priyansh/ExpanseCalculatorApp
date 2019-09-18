@@ -223,6 +223,9 @@ public class EntryDetailActivity extends BaseActivity {
                         case AppConstant.EXPENSE_OTHER:
                             iconDrawable = R.drawable.ic_other_primary;
                             break;
+                        case AppConstant.EXPENSE_FUEL:
+                            iconDrawable = R.drawable.ic_local_gas_station_primary;
+                            break;
 
                     }
 
